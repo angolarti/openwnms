@@ -1,0 +1,10 @@
+click==7.1.2
+easysnmp==0.2.5
+Flask==1.1.2
+itsdangerous==1.1.0
+Jinja2==2.11.2
+MarkupSafe==1.1.1
+pam==0.1.4
+pymongo==3.11.0
+python-nmap==0.6.1
+Werkzeug==1.0.1
