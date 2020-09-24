@@ -1,31 +1,27 @@
 from datetime import datetime
 from typing import List
 
-from openwnms.domain import collection
-from openwnms.domain.infrastructure import Model
+from openwnms.domain.repository import Collection
 
 
-@collection
-class Hardware(object):
+class Hardware(Collection):
 
-    def __int__(self, name: str, kind: str, model: str, manufacturer: str):
+    def __init__(self, name: str, kind: str, model: str, manufacturer: str):
         self.name = name
         self.kind = kind
         self.model = model
         self.manufacturer = manufacturer
 
 
-@collection
-class Software(object):
-    def __int__(self, name: str, oldest: str, latest: str, installs: str):
+class Software(Collection):
+    def __init__(self, name: str, oldest: str, latest: str, installs: str):
         self.name = name
         self.oldest = oldest
         self.latest = latest
         self.installs = installs
 
 
-@collection
-class Device(Model):
+class Device(Collection):
 
     def __init__(self, hostname: str = None, ip_addr: str = None, mac_addr: str = None, system_operation: str = None,
                  open_ports: List[int] = None, description: str = None, manufacturer: str = None, model: str = None,
@@ -48,3 +44,10 @@ class Device(Model):
         self.groups = groups
         self.hardware = hardware
         self.software = software
+
+
+if __name__ == '__main__':
+    hr = Hardware('RAM', 'Memory', 'DDR2', 'VT')
+
+    print(hr.to_collection())
+    print(hr.__class__.__name__.lower())
