@@ -1,3 +1,4 @@
+import math
 import time
 from ipaddress import ip_address
 
@@ -15,15 +16,11 @@ def is_ip_address(ip_addr: str) -> bool:
 
 def convert_units(num: int):
     """
-    this function will convert bytes to MB.... GB... etc
+    this function will convert bytes to MB.... GB.... TB.... etc
     """
     step_unit = 1024.0  # 1024 bad the size
 
     for unit in ['KB', 'MB', 'GB', 'TB']:
         if num < step_unit:
-            return "%3.2f %s" % (num, unit)
+            return "%d%s" % (math.ceil(num), unit)
         num /= step_unit
-
-
-def calc_disk_space_usage(disk_usage: int, hr_storage_allocation):
-    pass

@@ -100,7 +100,7 @@ class MemoryStatistic:
     @staticmethod
     def total_swap_size(session: Session):
         try:
-            return MemoryStatistic.__calculate_size(session, 'memTotalSwap.0')
+            return MemoryStatistic.__calculate_size(session, '.1.3.6.1.4.1.2021.4.3')
         except SystemError as error:
             print(error)
 
@@ -155,11 +155,13 @@ class MemoryStatistic:
 
     @staticmethod
     def __calculate_size(session: Session, oid: str):
-        cached_ram = session.get(oid).value
-        if cached_ram != NO_SUCH_OBJECT:
-            return convert_units(int(cached_ram))
+        cached_ram = session.walk(oid)
+        if len(cached_ram):
+            if cached_ram == NO_SUCH_INSTANCE or cached_ram == NO_SUCH_OBJECT:
+                return NO_SUCH_INSTANCE
 
-        return NO_SUCH_OBJECT
+            return convert_units(int(cached_ram[0].value))
+        return 0
 
 
 class DiskStatistic:
@@ -172,12 +174,19 @@ class DiskStatistic:
             pass
 
     @staticmethod
+    def disk_info(session: Session):
+        try:
+            return session.bulkwalk('.1.3.6.1.4.1.2021.4')
+        except (SystemError, IndexError):
+            pass
+
+    @staticmethod
     def __calculate_size(session: Session, oid: str):
         cached_ram = session.get(oid).value
-        if cached_ram != NO_SUCH_INSTANCE and cached_ram != NO_SUCH_OBJECT:
-            return convert_units(int(cached_ram))
+        if cached_ram == NO_SUCH_INSTANCE or cached_ram == NO_SUCH_OBJECT:
+            return NO_SUCH_INSTANCE
 
-        return NO_SUCH_INSTANCE
+        return convert_units(int(cached_ram))
 
 
 class HwStatistic:
@@ -207,7 +216,11 @@ if __name__ == '__main__':
     for host in hosts:
 
         if get_hostname(connect(host)) is not None:
-            print('TEST OID: ', HwStatistic.test_oid(connect(host)))
+            for disk in DiskStatistic.disk_info(connect(host)):
+                print(disk)
+                print('RAM: ', convert_units(int(8006972)))
+            print("HOST", host, 'TOTAL SWAP: ', MemoryStatistic.total_swap_size(connect(host)))
+            continue
 
             hardware = {}
             device = Device()
