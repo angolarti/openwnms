@@ -1,0 +1,222 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito|Nunito+Sans&display=swap');
+
+body {
+    background-color: #eff1f4ff;
+    /* remove overflow */
+    overflow-x: hidden;
+}
+
+#sidebar-wrapper {
+    min-height: 100vh; /* viewport height */
+    margin-left: -18rem;  /* escalonamento no flex 1rem = 16 => 16 * 18 = xpx*/
+    -webkit-transition: margin .25s ease-out;
+    -moz-webkit-transition: margin .25s ease-out;
+    -o-webkit-transition: margin .25s ease-out;
+    transition: margin .25s ease-out;
+    background-color: #3e4856ff;
+}
+
+#sidebar-wrapper .sidebar-heading {
+    padding: 0.875rem 1.25rem;
+    background-color: #262d37ff;
+    color: #fff;
+    height: 64px;
+    font-size: 17px;
+    font-family: 'Nunito' sans-serif;
+}
+
+#sidebar-wrapper .sidebar-heading img {
+    width: 30px;
+    padding-bottom: 3%;
+    padding-right: 3%;
+}
+
+#sidebar-wrapper .list-group {
+    width: 18rem;
+}
+
+#sidebar-wrapper .list-group-item {
+    background-color: #3e4856ff;
+    color: #fff;
+    border: none;
+    font-family: 'Nunito', sans-serif;
+    padding: 10%;
+    padding-left: 15%;
+    font-weight: bold;
+}
+
+#sidebar-wrapper .list-group-item i {
+    padding-right: 5.5%;
+    font-size: 18px;
+}
+
+#sidebar-wrapper .list-group-item:hover {
+    background-color: #262e39f0;
+    color: #fff;
+}
+
+#page-content-wrapper {
+    min-width: 100vw; /* viewport width */
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: 0;
+}
+
+@media(min-width: 768px) {
+    #page-content-wrapper {
+        min-width: 0;
+        width: 100%;
+    }
+
+    #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: -18rem;
+    }
+}
+
+/* ----------------------------------------- */
+#navbar-site-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 18px;
+    padding-left: 1.2%;
+}
+
+.delonix-form-field {
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: #bacad6ff;
+    box-shadow: 0px 1px 2px rgba(164, 164, 164, 0.2);
+    color: #222;
+    font-family: 'Nunito' sans-serif;
+    font-size: 16px;
+}
+
+.delonix-form-field::placeholder {
+    color: #c4c8ccff;
+    font-family: 'Nunito' sans-serif;
+    font-size: 16px;
+}
+
+#navbar-search-form {
+    width: 350px;
+}
+
+#navbar-search-field {
+    width: 100%;
+}
+
+#navbar-profile img {
+    border-radius: 50%;
+    width: 12%;
+}
+
+#navbar-profile span {
+    padding-left: 4%;
+    color: #262d37ff;
+    font-family: 'Nunito' sans-serif;
+}
+
+#delonix-navbar {
+    background-color: #fff;
+    box-shadow: 8px 2px 6px rgba(164, 164, 164, 0.3);
+    height: 64px;
+    padding-top: 0;
+    padding-left: 0;
+    padding-bottom: 0;
+}
+
+#menu-toggle {
+    background-color: #262d37ff;
+    width: 82px;
+    height: 64px;
+    color: #fff;
+    padding-top: 14px;
+
+}
+
+#menu-toggle img {
+    width: 30px;
+}
+
+/* ----------------------------------------------- */
+#content {
+    margin-top: 50px;
+}
+
+.delonix-main-h3 {
+    font-family: 'Nunito' sans-serif;
+    color: #262d37ff;
+    font-size: 30px;
+    margin-bottom: 15px;
+}
+
+.delonix-form {
+    box-shadow: 0px 4px 6px rgba(164, 164, 164, 0.3);
+}
+
+.delonix-form-body {
+    padding: 1.5%;
+    margin-bottom: 4%;
+}
+
+.confirm-btns {
+    background-color: #f5f7faff;
+}
+
+.confirm-btns button {
+    font-family: 'Nunito' sans-serif;
+    font-weight: bold;
+    padding-left: 2%;
+    padding-right: 2%;
+    background-color: #5898d9ff;
+    border: none;
+}
+
+.confirm-btns button:hover {
+    background-color: #2b74bfff;
+}
+
+.form-group label {
+    font-size: 17px;
+    color: #a3a8aeff;
+}
+
+.table {
+    border: none;
+    box-shadow: 0px 4px 12px rgba(164, 164, 164, 0.3);
+    padding: .7%;
+}
+
+.table thead {
+    background-color: #f7f6fb;
+}
+
+.table-col-title {
+    font-family: 'Nunito' sans-serif;
+    font-size: 13px;
+    color: #78797d;
+}
+
+.table tbody {
+    font-family: 'Nunito' sans-serif;
+    font-size: 16px;
+    color: #78797d;
+}
+
+.table-title {
+    margin-top: 5vh;
+    margin-bottom: 2vh;
+}
+
+.table-title input {
+    width: 30%;
+}
+
+#vendas-h3 {
+    margin-top: 5vh;
+    margin-bottom: 2vh;
+}

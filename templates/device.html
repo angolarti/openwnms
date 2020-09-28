@@ -1,0 +1,94 @@
+{% extends 'base/template.html' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Informaçao Geral</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item"><b>Distribuçao: </b>{{ device.system_info.distribution_name }}</li>
+                        <li class="list-group-item"><b>Versao: </b>{{ device.system_info.distribution_version }}</li>
+                        <li class="list-group-item"><b>OS: </b>{{ device.system_info.operating_system }}</li>
+                        <li class="list-group-item"><b>OS Versao: </b>{{ device.system_info.operating_system_version }}</li>
+                        <li class="list-group-item"><b>Arquitetura: </b>{{ device.system_info.architecture }}</li>
+                        <li class="list-group-item"><b>Nome do PC: </b>{{ device.hostname }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+         <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Carga Média</h5>
+                </div>
+            </div>
+        </div>
+
+         <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">RAM</h5>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <h6>Total</h6>
+                            <span>{{ device.hardware['ram'].total_in_machine }}</span>
+                        </div>
+                        <div class="col-sm-4">
+                            <h6>Disponível</h6>
+                            <span>{{ device.hardware['ram'].available }}</span>
+                        </div>
+                        <div class="col-sm-4">
+                            <h6>Livre</h6>
+                            <span>{{ device.hardware['ram'].free }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Uso de Disco</h5>
+                    <table class="table bg-white">
+                        <thead>
+                            <tr>
+                                <th class="table-col-title">SISTEMA DE ARQUIVO</th>
+                                <th class="table-col-title">TAMANHO</th>
+                                <th class="table-col-title">EM USO</th>
+                                <th class="table-col-title">ACESSIVEL</th>
+                                <th class="table-col-title">EM USO %</th>
+                                <th class="table-col-title">PONTO DE MONTAGEM</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Software</h5>
+                    <table class="table bg-white">
+                        <thead>
+                            <tr>
+                                <th class="table-col-title">SOFTWARE</th>
+                                <th class="table-col-title">INSTALADO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -23,3 +23,7 @@ def convert_units(num: int):
         if num < step_unit:
             return "%3.2f %s" % (num, unit)
         num /= step_unit
+
+
+def calc_disk_space_usage(disk_usage: int, hr_storage_allocation):
+    pass

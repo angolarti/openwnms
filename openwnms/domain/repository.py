@@ -17,46 +17,51 @@ class DB:
         return inst
 
 
-@collection
 class BaseCollection:
 
-    def __init__(self):
-        self.__document = DB()._client.openwnms
+    def collection(self):
+        return BaseCollection.document()[self.__class__.__name__.lower()]
+
+    @staticmethod
+    def document():
+        return DB()._client[settings.DOCUMENT_NAME]
 
     def to_collection(self):
         return self.__dict__
 
 
+@collection
 class Collection(BaseCollection):
 
     def __init__(self):
-        self.__document = self._client.openwnms
-        self.__collection = self.__document[self.__class__.__name__.lower()]
+        super().__init__()
+
+        if hasattr(self, '_BaseCollection__document'):
+            del self._BaseCollection__document
 
     def save(self):
-        return self.__collection.insert_one(self.to_collection())
+        print(type(self.to_collection()))
+        return self.collection().insert_one(self.to_collection())
 
     def update(self):
-        return self.__collection.update_one(
+        return self.collection().update_one(
             {'_id': ObjectId(id)},
             {'$set': self.to_collection()}
         )
 
     def delete(self):
-        self.__collection.delete_many({
+        self.collection().delete_many({
             '_id': ObjectId(self._id)
         })
 
+    def find_one(self, id: str):
+        return self.collection().find_one({
+             '_id': ObjectId(id)
+        })
+
     def find_all(self):
-        return self.__collection.find()
+        return self.collection().find()
 
     def list_collections(self, document_name):
         document = self._client[document_name]
         return document.list_collection_names(include_system_collections=False)
-
-
-if __name__ == '__main__':
-    model = Collection()
-
-    for col in model.list_collections('flask-mongo'):
-        print(col)

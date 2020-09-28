@@ -1,4 +1,6 @@
 from easysnmp import Session
+import scapy.all as scapy
+
 from utils import convert_int_to_time, convert_units
 
 
@@ -13,11 +15,44 @@ def get_cpu_usage(session):
         print(error)
 
 
-def get_system_name(session):
+def get_system_info(session):
+
+    def get_version_distribution(description):
+        """
+        :param description:
+        :return: dist_name, dist_version, kernel_name, kernel_version, hostname
+        """
+        print(description)
+        try:
+            if description[3] != '#1' and description[0] == 'Linux':
+                distribution = description[3].split('-')
+                return {
+                    'distribution_name': distribution[1],
+                    'distribution_version': distribution[0].split('~')[1],
+                    'operating_system': description[0],
+                    'operating_system_version': description[2].split('-')[0],
+                    'architecture': description[len(description)-1]
+                }
+            elif 'Windows' == description[12]:
+                return {
+                    'operating_system': description[12],
+                    'operating_system_version': description[14],
+                    'architecture': description[1]
+                }
+            return {
+                'distribution_name': description[2].split('-')[2],
+                'distribution_version': description[2].split('-')[1],
+                'operating_system': description[0],
+                'operating_system_version': description[2].split('-')[0],
+                'architecture': description[len(description) - 1]
+            }
+        except IndexError:
+            pass
+
     try:
         description = session.get('sysDescr.0').value.split(' ')
-        return description[2], description[len(description)-1]
-    except SystemError as error:
+        return SystemInfo(**get_version_distribution(description))
+    except (SystemError, TypeError) as error:
         print(error)
 
 
@@ -79,7 +114,7 @@ class MemoryStatistic:
     @staticmethod
     def total_ram_in_machine(session: Session):
         try:
-            return MemoryStatistic.__calculate_size(session, 'memTotalReal.0')
+            return MemoryStatistic.__calculate_size(session, 'UCD-SNMP-MIB::memTotalReal.0 ')
         except SystemError:
             pass
 
@@ -154,14 +189,59 @@ class HwStatistic:
         except SystemError:
             pass
 
+    @staticmethod
+    def test_oid(session: Session):
+        try:
+            return session.get('.1.3.6.1.2.1.25.3.8.1.2').value
+        except (SystemError, ValueError):
+            pass
 
+()
 if __name__ == '__main__':
 
-    hosts = ['192.168.0.16', '192.168.0.12', '192.168.0.19', '192.168.0.20', '192.168.0.21']
+    from openwnms.domain.models import Device, Hardware, Software, SystemInfo
+
+    # hosts = ['192.168.0.1', '192.168.0.11', '192.168.0.12', '192.168.0.14', '192.168.0.15']
+    hosts = ['192.168.0.12', '192.168.0.16', '192.168.0.18', '192.168.0.20', '192.168.0.21']
 
     for host in hosts:
-        if get_system_name(connect(host)) is not None:
-            print(f'Hostname: {get_hostname(connect(host))}')
+
+        if get_hostname(connect(host)) is not None:
+            print('TEST OID: ', HwStatistic.test_oid(connect(host)))
+
+            hardware = {}
+            device = Device()
+
+            device.hostname = get_hostname(connect(host))
+            device.ip_addr = host
+            device.mac_addr = scapy.getmacbyip(host)
+            device.system_info = get_system_info(connect(host)).to_collection()
+
+            memory_ram = Hardware('Memory RAM', None, None, MemoryStatistic.total_ram_in_machine(connect(host)))
+            memory_ram.total_in_machine = MemoryStatistic.total_ram_in_machine(connect(host))
+            memory_ram.cached = MemoryStatistic.total_cached_memory(connect(host))
+            memory_ram.shared = MemoryStatistic.total_ram_shared(connect(host))
+            memory_ram.buffered = MemoryStatistic.total_ram_buffered(connect(host))
+            memory_ram.free = MemoryStatistic.total_ram_free(connect(host))
+            memory_ram.available = MemoryStatistic.available_ram_used(connect(host))
+            hardware['ram'] = memory_ram.to_collection()
+
+            memory_swap = Hardware('Memory Swap', None, None, MemoryStatistic.total_swap_size(connect(host)))
+            memory_swap.available = MemoryStatistic.available_swap_size(connect(host))
+            hardware['swap'] = memory_swap.to_collection()
+
+            cpu = Hardware('CPU', None, None, get_cpu_usage(connect(host)))
+            hardware['cpu'] = cpu.to_collection()
+
+            disk = Hardware('Disk (HD)', None, None, DiskStatistic.disk_storage_capacity(connect(host)))
+            hardware['disk'] = disk.to_collection()
+
+            device.hardware = hardware
+            from datetime import datetime
+            device.created_at = datetime.now()
+            # device.save()
+
+            """print(f'Hostname: {get_hostname(connect(host))}')
             print(f'Total Swap Size: {MemoryStatistic.total_swap_size(connect(host))}')
             print(f'Available Swap Size: {MemoryStatistic.available_swap_size(connect(host))}')
             print(f'Total RAM Size: {MemoryStatistic.total_ram_in_machine(connect(host))}')
@@ -176,5 +256,6 @@ if __name__ == '__main__':
             print(f'System arch: {get_system_name(connect(host))[1]}')
             print(f'Up Time: {convert_int_to_time(int(get_system_up_time(connect(host))))}')
 
-            print(f'Amount Time Was Last Initialized: {HwStatistic.amount_time_host_was_last_initialized(connect(host))}')
+            print(f'Amount Time Was Last Initialized: {HwStatistic.amount_time_host_was_last_initialized(connect(host))}')"""
+            print(device.to_collection())
         print('-----------------------------------------------')

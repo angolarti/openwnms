@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compactible" content="ie-edge">
+    <title>Painel - Delonix</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/all.min.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="d-flex" id="wrapper">
+        <!-- SIDEBAR-->
+        <div id="sidebar-wrapper">
+            <div class="sidebar-heading">
+                <span>
+                    <img src="{{ url_for('static', filename='img/logo.png') }}">Painel Delonix
+                </span>
+            </div>
+            <div class="list-group list-group-flash border-right">
+                <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-home"></i>Inicio</a>
+                <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-users"></i>Funcionarios</a>
+                <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-box-open"></i>Produtos</a>
+                <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-sitemap"></i>Categorias</a>
+                <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-people-carry"></i>Fornecedores</a>
+                <a href="#" class="list-group-item list-group-item-action"><i class="far fa-chart-bar"></i>Relatorios</a>
+            </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div id="page-content-wrapper">
+            <nav class="navbar navbar-expand-lg navbar-light" id="delonix-navbar">
+                <span id="menu-toggle" class="rm-auto">
+                    <img src="{{ url_for('static', filename='img/logo.png') }}" class="mx-auto d-block">
+                </span>
+                <a class="navbar-brand" href="#" id="navbar-site-title">Painel</a>
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#delonix-navbar-collapse"
+                    aria-controls="delonix-navbar-collapse" aria-expanded="false" aria-label="Exibe toda navbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="delonix-navbar-collapse">
+                    <form class="form-inline" id="navbar-search-form">
+                        <input type="text" class="form-control form-field delonix-form-field" placeholder="pesquisar" id="navbar-search-field">
+                    </form>
+
+                    <div id="navbar-profile" class="ml-auto">
+                        <img src="https://avatars2.githubusercontent.com/u/31959169?s=460&u=aee51d0ed3465add7eb53b09ad4bd7f3ec294669&v=4" alt="">
+                        <span>Walter Angolar</span>
+                    </div>
+                </div>
+            </nav>
+
+            <div id="content" class="container">
+                <!-- GRAFICOS-->
+                <h3 id="vendas-h3">Vendas</h3>
+                <div class="card">
+                    <div class="card-body">
+                        <canvas id="relatorio"></canvas>
+                    </div>
+                </div>
+
+                <!-- FORMULARIOS-->
+                <div class="table-title">
+                    <h3>Utilizadores</h3>
+                    <input type="text" class="form-control form-field delonix-form-field" placeholder="pesquisar">
+                </div>
+                <table class="table bg-white">
+                    <thead>
+                        <tr>
+                            <th class="table-col-title">#</th>
+                            <th class="table-col-title">NOME</th>
+                            <th class="table-col-title">SOBRENOME</th>
+                            <th class="table-col-title">UTILIZADOR</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Walter Angolar</td>
+                            <td>da Silva</td>
+                            <td>@angolar</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Walter Angolar</td>
+                            <td>da Silva</td>
+                            <td>@angolar</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Walter Angolar</td>
+                            <td>da Silva</td>
+                            <td>@angolar</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Walter Angolar</td>
+                            <td>da Silva</td>
+                            <td>@angolar</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Walter Angolar</td>
+                            <td>da Silva</td>
+                            <td>@angolar</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>Walter Angolar</td>
+                            <td>da Silva</td>
+                            <td>@angolar</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>Walter Angolar</td>
+                            <td>da Silva</td>
+                            <td>@angolar</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>Walter Angolar</td>
+                            <td>da Silva</td>
+                            <td>@angolar</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- FORMULARIOS-->
+                <h3 id="main-page-form-title" class="delonix-main-h3">Novo artigo</h3>
+                <div>
+                    <div class="card delonix-form-body">
+                        <form class="delonix-form">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="author">Autor</label>
+                                    <input class="form-control form-field delonix-form-field" id="user-field" placeholder="Autor" name="author">
+                                    <hr>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="title">Titulo</label>
+                                    <input class="form-control form-field delonix-form-field" id="user-field" placeholder="Titulo" name="title">
+                                    <hr>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="content">Conteúdo</label>
+                                    <textarea name="content" id="body-field" placeholder="Um texto qualquer" class="form-control form-field delonix-form-field"></textarea>
+                                    <hr>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="date-publish">Data</label>
+                                    <input type="date" class="form-control form-field delonix-form-field" id="date-field" placeholder="Titulo" name="date-publish">
+                                </div>
+                            </div>
+
+                            <div class="confirm-btns card-footer">
+                                <button class="btn btn-primary">Criar e adicionar outro</button>
+                                <button class="btn btn-primary">Publicar post</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="{{ url_for('static', filename='assets/js/jquery-3.3.1.slim.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/popper.min.js') }}"></script>
+    <!-- JS do Bootstrap -->
+    <script src="{{ url_for('static', filename='assets/js/bootstrap.min.js') }}"></script>
+    <script>
+        $('#menu-toggle').click(function(event) {
+            event.preventDefault(); // proibe o evento do tag
+            $('#wrapper').toggleClass('toggled'); // add class || remove class
+        });
+    </script>
+    <script src="{{ url_for('static', filename='assets/js/chart/Chart.min.js') }}"></script>
+    <script>
+        var context = document.getElementById('relatorio').getContext('2d');
+        var grafico =new Chart(context, {
+            type: 'line',
+            data: {
+                labels: ['Janeiro', 'Fevereiro', 'Marco', 'Abril', 'Maio', 'Junho', 'Julho'], // columns
+                datasets: [{
+                    label: 'Vendas no ano',
+                    backgroundColor: '#5898d9ff',
+                    borderColor: '#5898d9ff',
+                    data: [10, 5, 7, 18, 25, 20, 22] // values by month
+                }]
+            }
+        })
+    </script>
+</body>
+</html>
