@@ -1,41 +1,69 @@
 {% extends 'base/template.html' %}
 
 {% block content %}
-<div class="table-title">
-    <h3>Terminais</h3>
-        <input type="text" class="form-control form-field delonix-form-field" placeholder="pesquisar">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-info-circle"></i> Total de terminais</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-info-circle"></i> Novos terminais</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-info-circle"></i> Terminais activos</h5>
+                </div>
+            </div>
+        </div>
     </div>
-    <table class="table bg-white">
-        <thead>
-            <tr>
-                <th class="table-col-title">#</th>
-                <th class="table-col-title">NOME</th>
-                <th class="table-col-title">ENDEREÇO IP</th>
-                <th class="table-col-title">ENDEREÇO MAC</th>
-                <th class="table-col-title">OS</th>
-                <th class="table-col-title">MODELO</th>
-                <th class="table-col-title">LOCALIZAÇÂO</th>
-                <th class="table-col-title">FABRICATE</th>
-                <th celspqn="3"></th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for device in devices %}
-            <tr>
-                <td>1</td>
-                <td>{{ device.hostname | upper }}</td>
-                <td>{{ device.ip_addr }}</td>
-                <td>{{ device.mac_addr | upper }}</td>
-                <td>{{ device.system_info.operating_system }}</td>
-                <td>{{ device.model }}</td>
-                <td>{{ device.location }}</td>
-                <td>{{ device.manufacturer }}</td>
-                <td>
-                    <a href=""><i class="fa fa-1x fa-edit"></i></a>
-                </td>
-                <td>
-                    <a href="{{ url_for('device', id = device._id) }}"><i class="fa fa-1x fa-eye"></i></a>
-                </td>
-            </tr>
-        {% endfor %}
+    <div class="table-title">
+        <h3>Terminais</h3>
+            <input type="text" class="form-control form-field delonix-form-field" placeholder="pesquisar">
+        </div>
+        <table class="table bg-white">
+            <thead>
+                <tr>
+                    <th class="table-col-title">#</th>
+                    <th class="table-col-title">NOME</th>
+                    <th class="table-col-title">ENDEREÇO IP</th>
+                    <th class="table-col-title">ENDEREÇO MAC</th>
+                    <th class="table-col-title">OS</th>
+                    <th class="table-col-title">MODELO</th>
+                    <th class="table-col-title">LOCALIZAÇÂO</th>
+                    <th class="table-col-title">FABRICATE</th>
+                    <th celspqn="3"></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for device in devices %}
+                <tr>
+                    <td>1</td>
+                    <td>{{ device.system_info.hostname | upper }}</td>
+                    <td>{{ device.ip_addr }}</td>
+                    <td>{{ device.mac_addr | upper }}</td>
+                    <td>{{ device.system_info.operating_system }}</td>
+                    <td>{{ device.model }}</td>
+                    <td>{{ device.location }}</td>
+                    <td>{{ device.manufacturer }}</td>
+                    <td>
+                        <a href=""><i class="fa fa-1x fa-edit"></i></a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('device', id = device._id) }}"><i class="fa fa-1x fa-eye"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

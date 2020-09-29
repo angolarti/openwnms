@@ -1,18 +1,20 @@
 {% extends 'base/template.html' %}
 
+{% block report %}
+    <a href="{{ url_for('device_report', id = device._id) }}" class="list-group-item list-group-item-action"><i class="far fa-chart-bar"></i>Relatórios</a>
+{% endblock %}
+
 {% block content %}
     <div class="row">
         <div class="col-sm-4">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Informaçao Geral</h5>
+                    <h5 class="card-title"><i class="fas fa-info-circle"></i> Informaçao Geral</h5>
                     <ul class="list-group">
-                        <li class="list-group-item"><b>Distribuçao: </b>{{ device.system_info.distribution_name }}</li>
-                        <li class="list-group-item"><b>Versao: </b>{{ device.system_info.distribution_version }}</li>
-                        <li class="list-group-item"><b>OS: </b>{{ device.system_info.operating_system }}</li>
-                        <li class="list-group-item"><b>OS Versao: </b>{{ device.system_info.operating_system_version }}</li>
-                        <li class="list-group-item"><b>Arquitetura: </b>{{ device.system_info.architecture }}</li>
-                        <li class="list-group-item"><b>Nome do PC: </b>{{ device.hostname }}</li>
+                        <li class="list-group-item"><b>OS: </b>{{ device.system_info.system_operation }}</li>
+                        <li class="list-group-item"><b>Uptime: </b>{{ device.system_info.system_uptime }}</li>
+                        <li class="list-group-item"><b>Ultima inicializaçao: </b>{{ device.system_info.amount_time_host_was_last_initialized }}</li>
+                        <li class="list-group-item"><b>Hostname: </b>{{ device.system_info.hostname }}</li>
                     </ul>
                 </div>
             </div>
@@ -21,7 +23,21 @@
          <div class="col-sm-4">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Carga Média</h5>
+                    <h5 class="card-title"><i class="fas fa-laptop"> </i> Carga Média</h5>
+                    <div class="row text-center font-weight-bold">
+                        <div class="col-sm-4">
+                            <h6 class="text-info">1 min</h6>
+                            <span>{{ device.cpu_statistics.one_minute_load }}</span>
+                        </div>
+                        <div class="col-sm-4">
+                            <h6 class="text-info">5 min</h6>
+                            <span>{{ device.cpu_statistics.five_minute_load }}</span>
+                        </div>
+                        <div class="col-sm-4">
+                            <h6 class="text-info">15 min</h6>
+                            <span>{{ device.cpu_statistics.fifteen_minute_load }}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -29,19 +45,19 @@
          <div class="col-sm-4">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">RAM</h5>
-                    <div class="row">
+                    <h5 class="card-title"><i class="fas fa-memory"> </i> RAM</h5>
+                    <div class="row text-center font-weight-bold">
                         <div class="col-sm-4">
-                            <h6>Total</h6>
-                            <span>{{ device.hardware['ram'].total_in_machine }}</span>
+                            <h6 class="text-info">Total</h6>
+                            <span>{{ device.memory_statistics.total_ram_in_machine }}</span>
                         </div>
                         <div class="col-sm-4">
-                            <h6>Disponível</h6>
-                            <span>{{ device.hardware['ram'].available }}</span>
+                            <h6 class="text-info">Disponível</h6>
+                            <span>{{ device.memory_statistics.total_ram_used }}</span>
                         </div>
                         <div class="col-sm-4">
-                            <h6>Livre</h6>
-                            <span>{{ device.hardware['ram'].free }}</span>
+                            <h6 class="text-info">Livre</h6>
+                            <span>{{ device.memory_statistics.total_ram_free }}</span>
                         </div>
                     </div>
                 </div>
@@ -54,19 +70,29 @@
         <div class="col-sm-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Uso de Disco</h5>
+                    <h5 class="card-title"><i class="fas fa-hdd"></i> Uso de Disco</h5>
                     <table class="table bg-white">
                         <thead>
                             <tr>
                                 <th class="table-col-title">SISTEMA DE ARQUIVO</th>
                                 <th class="table-col-title">TAMANHO</th>
                                 <th class="table-col-title">EM USO</th>
-                                <th class="table-col-title">ACESSIVEL</th>
+                                <th class="table-col-title">DISPONIVEL</th>
                                 <th class="table-col-title">EM USO %</th>
                                 <th class="table-col-title">PONTO DE MONTAGEM</th>
                             </tr>
                         </thead>
                         <tbody>
+                            {% for disk in device.disk_statistics %}
+                                <tr>
+                                    <td>{{ disk.path_partition }}</td>
+                                    <td>{{ disk.size_of_disk_or_partition }}</td>
+                                    <td>{{ disk.used_space_disk }}</td>
+                                    <td>{{ disk.available_space_disk }}</td>
+                                    <td>{{ disk.percentage_space_used_disk }}%</td>
+                                    <td>{{ disk.path_mounted }}</td>
+                                </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>

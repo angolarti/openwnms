@@ -33,7 +33,7 @@ class MemoryStatistics:
         RAM total na máquina
         :return: .1.3.6.1.4.1.2021.4.5.0
         """
-        return cls.TOTAL_RAM_USED_OID
+        return cls.TOTAL_RAM_IN_MACHINE_OID
 
     @classmethod
     def total_ram_used(cls):
@@ -41,7 +41,7 @@ class MemoryStatistics:
         RAM total usada
         :return: .1.3.6.1.4.1.2021.4.6.0
         """
-        return cls.MEM_REAL_AVAILABLE_OID
+        return cls.TOTAL_RAM_USED_OID
 
     @classmethod
     def total_ram_free(cls):
@@ -86,6 +86,8 @@ class DiskStatistics:
     PERCENTAGE_OF_SPACE_USED_ON_DISK_OID = '.1.3.6.1.4.1.2021.9.1.9'
     PERCENTAGE_OF_INODES_USED_ON_DISK_OID = '.1.3.6.1.4.1.2021.9.1.10'
 
+    DISK_STORAGE_CAPACITY = '1.3.6.1.2.1.25.3.6'
+
     @classmethod
     def path_where_the_disk_is_mounted(cls):
         return cls.PATH_WHERE_THE_DISK_IS_MOUNTED_OID
@@ -113,3 +115,7 @@ class DiskStatistics:
     @classmethod
     def percentage_of_inodes_used_on_disk(cls):
         return cls.PERCENTAGE_OF_INODES_USED_ON_DISK_OID
+
+    @classmethod
+    def disk_storage_capacity(cls):
+        return  cls.DISK_STORAGE_CAPACITY

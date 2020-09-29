@@ -183,20 +183,5 @@
         });
     </script>
     <script src="{{ url_for('static', filename='assets/js/chart/Chart.min.js') }}"></script>
-    <script>
-        var context = document.getElementById('relatorio').getContext('2d');
-        var grafico =new Chart(context, {
-            type: 'line',
-            data: {
-                labels: ['Janeiro', 'Fevereiro', 'Marco', 'Abril', 'Maio', 'Junho', 'Julho'], // columns
-                datasets: [{
-                    label: 'Vendas no ano',
-                    backgroundColor: '#5898d9ff',
-                    borderColor: '#5898d9ff',
-                    data: [10, 5, 7, 18, 25, 20, 22] // values by month
-                }]
-            }
-        })
-    </script>
 </body>
 </html>

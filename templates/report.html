@@ -1,0 +1,129 @@
+{% extends 'base/template.html' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-info-circle"></i></h5>
+                </div>
+            </div>
+        </div>
+
+         <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-laptop"> </i> Carga Média</h5>
+                    <canvas id="cpu"></canvas>
+                </div>
+            </div>
+        </div>
+
+         <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-memory"></i> RAM ({{ device.memory_statistics.total_ram_in_machine }})</h5>
+                    <canvas id="memory_statistics"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-hdd"></i> Uso de Disco</h5>
+                    <canvas id="disk_usage"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Software</h5>
+                    <table class="table bg-white">
+                        <thead>
+                            <tr>
+                                <th class="table-col-title">SOFTWARE</th>
+                                <th class="table-col-title">INSTALADO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='assets/js/chart/Chart.min.js') }}"></script>
+    <script>
+        var context = document.getElementById('cpu').getContext('2d');
+        var grafico = new Chart(context, {
+            type: 'line',
+            data: {
+                labels: ['1min', '5min', '15min'], // columns
+                datasets: [{
+                    label: 'CPU times load',
+                    backgroundColor: '#5898d9ff',
+                    borderColor: '#5898d9ff',
+                    data: [{{ device.cpu_statistics.one_minute_load | float }}, {{ device.cpu_statistics.five_minute_load | float }},
+                    {{ device.cpu_statistics.fifteen_minute_load | float }}] // values by month
+                }]
+            }
+        })
+    </script>
+
+    <script>
+        var context = document.getElementById('disk_usage').getContext('2d');
+            path_mounted = []
+            size_of_disk_or_partition = []
+            percentage_space_used_disk = []
+
+        {% for disk in device.disk_statistics %}
+            path_mounted.push("{{ disk.path_mounted}}")
+            size_of_disk_or_partition.push("{{ disk.size_of_disk_or_partition }}")
+            percentage_space_used_disk.push({{ disk.percentage_space_used_disk }})
+        {% endfor %}
+
+        var grafico = new Chart(context, {
+            type: 'line',
+            data: {
+                labels: path_mounted, // columns
+                datasets: [{
+                    label: 'Disk Usage',
+                    backgroundColor: '#5898d9ff',
+                    borderColor: '#5898d9ff',
+                    data: percentage_space_used_disk // values by month
+                }]
+            }
+        })
+    </script>
+
+    <script>
+        var context = document.getElementById('cpu').getContext('2d');
+        var grafico = new Chart(context, {
+            type: 'line',
+            data: {
+                labels: ['Total', 'Disponivel', 'Livre'], // columns
+                datasets: [{
+                    label: 'RAM Usage',
+                    backgroundColor: '#5898d9ff',
+                    borderColor: '#5898d9ff',
+                    data: [{{ device.memory_statistics.total_ram_in_machine | float }}, {{ device.memory_statistics.total_ram_used | float }},
+                    {{ device.memory_statistics.total_ram_free | float }}] // values by month
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        })
+    </script>
+{% endblock %}

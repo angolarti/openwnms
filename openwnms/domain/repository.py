@@ -40,7 +40,6 @@ class Collection(BaseCollection):
             del self._BaseCollection__document
 
     def save(self):
-        print(type(self.to_collection()))
         return self.collection().insert_one(self.to_collection())
 
     def update(self):
