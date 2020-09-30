@@ -1,70 +1,64 @@
-import logging
-import socket
-
-import scapy.all as scapy
+from openwnms.tools.utils import network_scanner, get_ipv4_addr, get_ipv6_addr, get_hostname, \
+    get_all_ifaces, get_mac_addr, conf, get_mac_by_ip
 
 
-logging.getLogger('scapy.runtime').setLevel(logging.ERROR)
-
-
-class Network(object):
-
-    @staticmethod
-    def icmp_scan(ip_addr: str):
-        """
-        :param ip_addr: XXX.XXX.XXX.XXX
-        :return: ip_addr, mac_addr, hostname
-        """
-
-        ans = scapy.sr(scapy.IP(dst=f'{ip_addr}') / scapy.ICMP(),
-                       timeout=1, verbose=0)  # send and receive packet in layer 3
-        if ans[0]:
-            try:
-                return ans[0].res[0][0].dst, scapy.getmacbyip(ans[0].res[0][0].dst), \
-                       socket.getfqdn(ans[0].res[0][0].dst)
-            except (socket.herror, AttributeError, IndexError) as error:
-                pass
+class ScanDevice:
+    __NET_SOURCE = get_ipv4_addr(conf.iface)
+    __NET_TARGET = __NET_SOURCE[:len(__NET_SOURCE) - 3]
+    __network_devices = {
+        'total_online': 0,
+        'total_offline': 0
+    }
+    __network_interfaces = {}
 
     @staticmethod
-    def port_scan(ip_addr: str, port_start: int, port_end: int = None):
-        ports = []
-        if port_end is not None:
-            for port in range(port_start, port_end):
-                response = scapy.sr1(scapy.IP(dst=f'{ip_addr}')/scapy.TCP(dport=port, flags='S'), verbose=0)
-                result = response['TCP'].flags
-                if result == 18:
-                    ports.append(port)
-                else:
-                    continue
-        return ports
-
-
-class Loopback:
+    def net_discovery_host(start: int = 1, end: int = 256):
+        return network_scanner(ScanDevice.__NET_TARGET, start, end)
 
     @staticmethod
-    def get_if_list():
-        return scapy.get_if_list()
+    def net_scan_device(target):
+
+        if not (target is None):
+            ScanDevice.__build_dict_device_scan(target)
+            ScanDevice.__network_devices['total_online'] += 1
+        else:
+            ScanDevice.__network_devices['total_offline'] += 1
 
     @staticmethod
-    def get_ip_addr(iff):
-        return scapy.get_if_addr(iff)
+    def __build_dict_device_scan(target):
+
+        ScanDevice.__network_devices[target] = {
+            'hostname': get_hostname(target),
+            'ip_addr': target,
+            'mac_addr': get_mac_by_ip(target)
+        }
+
+
+    @staticmethod
+    def net_scan_ifaces():
+        for iface in get_all_ifaces():
+            ScanDevice.__network_interfaces[iface] = {
+                'mac_addr': get_mac_addr(iface),
+                'ipv4_addr': get_ipv4_addr(iface),
+                'ipv6_addr': get_ipv6_addr(iface),
+            }
+
+    @staticmethod
+    def show_network_devices():
+        return ScanDevice.__network_devices
+
+    @staticmethod
+    def show_host_interfaces_info():
+        return ScanDevice.__network_interfaces
 
 
 if __name__ == '__main__':
 
-    print(f'Ifaces: {Loopback.get_if_list()}')
-    print(f'IP: {Loopback.get_ip_addr(Loopback.get_if_list()[1])}')
+    net_scan_devices = ScanDevice.net_discovery_host(1, 25)
+    ScanDevice.net_scan_ifaces()
 
-    ip_range = ['192.168.0.1', '192.168.0.100']
-    first_ip_addr = ip_range[0].split('.')
-    last_ip_addr = ip_range[len(ip_range)-1].split('.')
+    for reply in net_scan_devices:
+        ScanDevice.net_scan_device(reply)
 
-    net_addr = f'{first_ip_addr[0]}.{first_ip_addr[1]}.{first_ip_addr[2]}'
-    for addr in range(int(first_ip_addr[3]), int(last_ip_addr[3])+1):
-        try:
-            ip =  f'{net_addr}.{addr}'
-            ip_addr, mac_addr, hostname = Network.icmp_scan(ip)
-            print(f'IP ADDR: {ip_addr}, MAC ADDR: {mac_addr} Hostname: {hostname}')
-            # print(f'Open ports: {Network.port_scan(ip, 22, 25)}')
-        except TypeError:
-            continue
+    print(ScanDevice.show_network_devices())
+    print(ScanDevice.show_host_interfaces_info())

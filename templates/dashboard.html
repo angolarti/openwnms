@@ -6,6 +6,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title"><i class="fas fa-info-circle"></i> Total de terminais</h5>
+                    <h1>{{ total_devices }}</h1>
                 </div>
             </div>
         </div>
@@ -14,6 +15,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title"><i class="fas fa-info-circle"></i> Novos terminais</h5>
+                    <h1>{{ count_device_scan_last_five_days }}</h1>
                 </div>
             </div>
         </div>
@@ -21,15 +23,33 @@
         <div class="col-sm-4">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title"><i class="fas fa-info-circle"></i> Terminais activos</h5>
+                    <h5 class="card-title"><i class="fas fa-info-circle"></i> Terminais activos ({{ total_devices }})</h5>
+                    <div class="row">
+                        <div class="col-sm-7">
+                            <h6 class="text-success">Activos: {{ device_is_up_and_down.up }}</h6>
+                            <h6 class="text-danger">Inactivos: {{ device_is_up_and_down.down }}</h6>
+                        </div>
+                        <div class="col-sm-5">
+                            <canvas id="terminais_actives"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="table-title">
         <h3>Terminais</h3>
-            <input type="text" class="form-control form-field delonix-form-field" placeholder="pesquisar">
+        <div class="row">
+            <div class="col-sm-8">
+                <input type="text" class="form-control form-field delonix-form-field" placeholder="pesquisar">
+            </div>
+            <div class="col-sm-4">
+                <div class="confirm-btns right">
+                    <button class="btn btn-primary">Rescan</button>
+                </div>
+            </div>
         </div>
+
         <table class="table bg-white">
             <thead>
                 <tr>
@@ -41,14 +61,14 @@
                     <th class="table-col-title">MODELO</th>
                     <th class="table-col-title">LOCALIZAÇÂO</th>
                     <th class="table-col-title">FABRICATE</th>
-                    <th celspqn="3"></th>
+                    <th celspan="3"></th>
                 </tr>
             </thead>
             <tbody>
             {% for device in devices %}
                 <tr>
-                    <td>1</td>
-                    <td>{{ device.system_info.hostname | upper }}</td>
+                    <td><span class="{% if device_link_status(device) %}link-up{% else %}link-down{% endif %}"></span></td>
+                    <td>{{ device.hostname | upper }}</td>
                     <td>{{ device.ip_addr }}</td>
                     <td>{{ device.mac_addr | upper }}</td>
                     <td>{{ device.system_info.operating_system }}</td>
@@ -66,4 +86,18 @@
             </tbody>
         </table>
     </div>
+
+    <script src="{{ url_for('static', filename='assets/js/chart/Chart.min.js') }}"></script>
+    <script>
+        var context = document.getElementById('terminais_actives').getContext('2d');
+        var grafico = new Chart(context, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    backgroundColor: '#5898d9ff',
+                    data: [{{ device_is_up_and_down.up  }}, {{ device_is_up_and_down.down }}] // values by month
+                }]
+            }
+        })
+    </script>
 {% endblock %}

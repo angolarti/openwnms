@@ -163,8 +163,8 @@ class MIB:
 
 
 if __name__ == '__main__':
-    print('Memory: ', MIB('192.168.0.16').memory_statistics)
-    print('Disk: ', MIB('192.168.0.16').disk_statistics)
-    print('CPU Statistic: ', (MIB('192.168.0.16').cpu_statistics))
-    print('CPU Times: ', MIB('192.168.0.16').cpu_times)
-    print('System info: ', MIB('192.168.0.16').system_info)
+    print('Memory: ', MIB('192.168.1.44').memory_statistics)
+    print('Disk: ', MIB('192.168.1.44').disk_statistics)
+    print('CPU Statistic: ', (MIB('192.168.1.44').cpu_statistics))
+    print('CPU Times: ', MIB('192.168.1.44').cpu_times)
+    print('System info: ', MIB('192.168.1.44').system_info)

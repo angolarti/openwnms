@@ -220,3 +220,18 @@ body {
     margin-top: 5vh;
     margin-bottom: 2vh;
 }
+
+.link-up, .link-down {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.link-up {
+  background-color: #28a745;
+}
+
+.link-down {
+  background-color: #c82333;
+}
