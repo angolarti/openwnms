@@ -30,7 +30,7 @@ def save_collection(target_mib: str, device_scan: SystemInfo) -> dict:
 
 if __name__ == '__main__':
 
-    net_scan_devices = ScanDevice.net_discovery_host()
+    net_scan_devices = ScanDevice.net_discovery_host([1, 44, 191])
     ScanDevice.net_scan_ifaces()
 
     for reply in net_scan_devices:

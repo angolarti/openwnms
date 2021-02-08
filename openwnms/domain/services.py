@@ -12,8 +12,8 @@ class ScanDevice:
     __network_interfaces = {}
 
     @staticmethod
-    def net_discovery_host(start: int = 1, end: int = 256):
-        return network_scanner(ScanDevice.__NET_TARGET, start, end)
+    def net_discovery_host(address):
+        return network_scanner(ScanDevice.__NET_TARGET, address)
 
     @staticmethod
     def net_scan_device(target):

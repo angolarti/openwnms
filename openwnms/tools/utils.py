@@ -12,12 +12,12 @@ TIMEOUT = 2
 conf.verb = 0
 
 
-def network_scanner(net_target: str, start: int, end: int) -> dict:
+def network_scanner(net_target: str, address) -> dict:
 
     print('Start scanner...')
     network_devices = []
-    for ip in range(start, end):
-        packet = IP(dst=f'{net_target}.{ip}', ttl=20) / ICMP()
+    for ip in range(0, len(address)):
+        packet = IP(dst=f'{net_target}.{address[ip]}', ttl=20) / ICMP()
         try:
             print(f'Found : {sr1(packet, timeout=TIMEOUT).src}')
         except AttributeError:
