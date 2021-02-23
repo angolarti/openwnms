@@ -1,5 +1,17 @@
+import pam
+
 from openwnms.tools.utils import network_scanner, get_ipv4_addr, get_ipv6_addr, get_hostname, \
     get_all_ifaces, get_mac_addr, conf, get_mac_by_ip
+
+
+class LoginService(object):
+
+    def __init__(self):
+        self.pam = pam.Pam()
+
+    @staticmethod
+    def authenticate(username, password):
+        return pam.authenticate(username, password)
 
 
 class ScanDevice:
@@ -22,6 +34,7 @@ class ScanDevice:
             ScanDevice.__build_dict_device_scan(target)
             ScanDevice.__network_devices['total_online'] += 1
         else:
+            print('Offline')
             ScanDevice.__network_devices['total_offline'] += 1
 
     @staticmethod

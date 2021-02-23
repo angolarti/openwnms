@@ -45,7 +45,7 @@ class Collection(BaseCollection):
 
     def update(self):
         return self.collection().update_one(
-            {'_id': ObjectId(id)},
+            {'_id': ObjectId(self._id)},
             {'$set': self.to_collection()}
         )
 

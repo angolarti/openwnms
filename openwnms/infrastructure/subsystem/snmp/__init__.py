@@ -5,6 +5,8 @@ class System:
     AMOUNT_TIME_HOST_WAS_LAST_INITIALIZED_OID = '.1.3.6.1.2.1.25.1.1'
     SYSTEM_DESCRIPTION_OID = '.1.3.6.1.2.1.1.1.0'
     HOSTNAME_OID = '.1.3.6.1.2.1.1.5.0'
+    SYSTEM_LOCATION_OID = '.1.3.6.1.2.1.1.6'
+    SYSTEM_CONTACT = '.1.3.6.1.2.1.1.4.0'
 
 
     @classmethod

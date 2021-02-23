@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/bootstrap.min.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/login.css') }}" />
+      <title>OpenWNMS - Network System</title>
+  </head>
+  <body class="text-center bg-dark">
+    <div class="container-fluid">
+            <img src="{{ url_for('static', filename='img/9f2124f57dc31443e02f31c4103a504d.png') }}" width="150"
+                         class="d-inline-block align-top" alt="" loading="lazy">
+            <form action="/authenticate" method="POST" class="form-signin">
+                <div class="card" style="width:;">
+                  {% with messages = get_flashed_messages() %}
+                      {% if messages %}
+                          <ul id="messages" class="list-unstyled">
+                              {% for message in messages %}
+                                <li class="alert alert-danger">{{ message }}</li>
+                              {% endfor %}
+                              </ul>
+                      {% endif %}
+                  {% endwith %}
+                  <div class="card-body px-2 py-3">
+                    <input type="hidden" name="next" value="/">
+                    <h1 class="h3 mb-3 font-weight-normal card-title">Login</h1>
+                    <label for="username" class="sr-only">Nome de utilizador</label>
+                    <input type="text" id="username" class="form-control" name="username" placeholder="Utilizador" required autofocus>
+                    <label for="password" class="sr-only">Password</label>
+                    <input type="password" id="password" class="form-control" name="password" placeholder="Senha" required>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Entar</button>
+                  </div>
+                </div>
+            </form>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- Popper.js first, then Bootstrap JS -->
+    <script src="{{ url_for('static', filename='assets/js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/bootstrap.min.js') }}"></script>
+  </body>
+</html>

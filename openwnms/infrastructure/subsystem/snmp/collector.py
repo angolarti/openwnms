@@ -150,14 +150,16 @@ class MIB:
     @property
     def system_info(self):
         try:
-            return {
+            system_info = {
                 'system_uptime': convert_int_to_time(int(self.collect(System.system_uptime).value)),
                 'total_processes': self.collect(System.total_processes)[0].value,
                 'amount_time_host_was_last_initialized': convert_int_to_time(
                     int(self.collect(System.amount_time_host_was_last_initialized)[0].value)),
                 'system_operation': self.collect(System.system_description).value,
-                'hostname': self.collect(System.get_hostname).value
+                'hostname': self.collect(System.get_hostname).value,
+                'software_installed': self.collect(System.get_software_installed).value
             }
+            return system_info
         except AttributeError:
             pass
 

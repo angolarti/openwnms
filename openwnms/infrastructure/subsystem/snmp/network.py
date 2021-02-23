@@ -5,6 +5,9 @@ class NetworkInterfaceStatistics:
     GET_BYTES_IN_FOR_NIC_FOUR = '.1.3.6.1.2.1.2.2.1.10.4'
     GET_BYTES_OUT = '.1.3.6.1.2.1.2.2.1.16'
     GET_BYTES_OUT_FOR_NIC_FOUR = '.1.3.6.1.2.1.2.2.1.16.4'
+    GET_IFACE_VENDOR_OID = '.1.3.6.1.2.1.2.2.1.2.2'
+    GET_IFACE_VENDOR_WIFI_OID = '.1.3.6.1.2.1.2.2.1.2.3'
+    GET_IFACE_NAMES_OID = '.1.3.6.1.2.1.31.1.1.1.1'
 
     @classmethod
     def list_nic_names(cls):

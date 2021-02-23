@@ -26,8 +26,8 @@
                     <h5 class="card-title"><i class="fas fa-info-circle"></i> Terminais activos ({{ total_devices }})</h5>
                     <div class="row">
                         <div class="col-sm-7">
-                            <h6 class="text-success">Activos: {{ device_is_up_and_down.up }}</h6>
-                            <h6 class="text-danger">Inactivos: {{ device_is_up_and_down.down }}</h6>
+                            <h6 class="text-success" id="up">Activos: 0</h6>
+                            <h6 class="text-danger" id="down">Inactivos: 0</h6>
                         </div>
                         <div class="col-sm-5">
                             <canvas id="terminais_actives"></canvas>
@@ -44,13 +44,18 @@
                 <input type="text" class="form-control form-field delonix-form-field" placeholder="pesquisar">
             </div>
             <div class="col-sm-4">
-                <div class="confirm-btns right">
-                    <button class="btn btn-primary">Rescan</button>
+                <div class="col-sm-4">
+                    <div class="float-right">
+                        <button class="btn btn-primary" type="button" id="btnRescan">
+                            <span class="" role="status" aria-hidden="true"></span>
+                            Rescan...
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <table class="table bg-white">
+        <table class="table bg-white mt-2" id="table_device">
             <thead>
                 <tr>
                     <th class="table-col-title">#</th>
@@ -66,8 +71,8 @@
             </thead>
             <tbody>
             {% for device in devices %}
-                <tr>
-                    <td><span class="{% if device_link_status(device) %}link-up{% else %}link-down{% endif %}"></span></td>
+                <tr onchenge='ping("{{ device.ip_addr }}");'>
+                    <td><span id="{{ device.ip_addr }}"></span></td>
                     <td>{{ device.hostname | upper }}</td>
                     <td>{{ device.ip_addr }}</td>
                     <td>{{ device.mac_addr | upper }}</td>
@@ -75,9 +80,9 @@
                     <td>{{ device.model }}</td>
                     <td>{{ device.location }}</td>
                     <td>{{ device.manufacturer }}</td>
-                    <td>
+                    <!--td>
                         <a href=""><i class="fa fa-1x fa-edit"></i></a>
-                    </td>
+                    </td-->
                     <td>
                         <a href="{{ url_for('device', id = device._id) }}"><i class="fa fa-1x fa-eye"></i></a>
                     </td>
@@ -88,16 +93,5 @@
     </div>
 
     <script src="{{ url_for('static', filename='assets/js/chart/Chart.min.js') }}"></script>
-    <script>
-        var context = document.getElementById('terminais_actives').getContext('2d');
-        var grafico = new Chart(context, {
-            type: 'doughnut',
-            data: {
-                datasets: [{
-                    backgroundColor: '#5898d9ff',
-                    data: [{{ device_is_up_and_down.up  }}, {{ device_is_up_and_down.down }}] // values by month
-                }]
-            }
-        })
-    </script>
+    <script src="{{ url_for('static', filename='assets/js/openwnms.js') }}"></script>
 {% endblock %}

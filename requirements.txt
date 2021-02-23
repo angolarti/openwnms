@@ -4,7 +4,9 @@ Flask==1.1.2
 itsdangerous==1.1.0
 Jinja2==2.11.2
 MarkupSafe==1.1.1
-pam==0.1.4
+pam==0.2.0
 pymongo==3.11.0
 python-nmap==0.6.1
+python-pam==1.8.4
+scapy==2.4.4
 Werkzeug==1.0.1

@@ -1,0 +1,19 @@
+version: '3'
+services:
+  openwnms:
+    build: .
+    command: gunicorn -b 0.0.0.0:5000 app
+    depends_on:
+      - mongodb
+    volumes:
+      - .:/usr/src/openwnms
+    ports:
+      - 5000:5000
+    env_file:
+      - ./.env.dev
+  
+  mongodb:
+    image: mongodb:alpine
+    environment:
+      MONGO_USER:
+      MONGO_PASS:
