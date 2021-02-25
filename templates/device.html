@@ -103,14 +103,26 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Software</h5>
-                    <table class="table bg-white">
+                     <table class="table bg-white mt-2" id="table_software">
                         <thead>
                             <tr>
-                                <th class="table-col-title">SOFTWARE</th>
-                                <th class="table-col-title">INSTALADO</th>
+                                <th class="table-col-title">#</th>
+                                <th class="table-col-title">NOME</th>
+                                <th class="table-col-title">LOCALIZAÇÃO</th>
+                                <th class="table-col-title">TIPO</th>
+                                <th class="table-col-title">STATUS</th>
                             </tr>
                         </thead>
                         <tbody>
+                        {% for softwares in device.system_info.software_running %}
+                            <tr>
+                                <td><span id="{{ softwares['status'] }}"></span></td>
+                                <td>{{ softwares['name'] | upper }}</td>
+                                <td>{{ softwares['path'] | upper }}</td>
+                                <td>{{ softwares['type'] | upper }}</td>
+                                <td>{{ softwares['status'] | upper }}</td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>

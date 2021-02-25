@@ -16,7 +16,8 @@ class LoginService(object):
 
 class ScanDevice:
     __NET_SOURCE = get_ipv4_addr(conf.iface)
-    __NET_TARGET = __NET_SOURCE[:len(__NET_SOURCE) - 3]
+    print('Source: ', __NET_SOURCE)
+    __NET_TARGET = __NET_SOURCE[:len(__NET_SOURCE) - 2]
     __network_devices = {
         'total_online': 0,
         'total_offline': 0
@@ -25,6 +26,7 @@ class ScanDevice:
 
     @staticmethod
     def net_discovery_host(address):
+        print('Discovery: ', ScanDevice.__NET_TARGET, address)
         return network_scanner(ScanDevice.__NET_TARGET, address)
 
     @staticmethod

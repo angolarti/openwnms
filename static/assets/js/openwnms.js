@@ -1,16 +1,16 @@
  function request(method = 'GET', url, async, body, fn) {
      console.log('loading...')
-     let xnlRequest = new XMLHttpRequest()
-     xnlRequest.onreadystatechange = () => {
-         if (xnlRequest.readyState === 4) {
-             console.log('Finish...')
-             fn(JSON.parse(xnlRequest.responseText))
-             return JSON.parse(xnlRequest.responseText)
+     let xmlRequest = new XMLHttpRequest()
+     xmlRequest.onreadystatechange = () => {
+         if (xmlRequest.readyState === 4) {
+             console.log('Finish...', xmlRequest.responseText)
+             fn(JSON.parse(xmlRequest.responseText))
+             return JSON.parse(xmlRequest.responseText)
          }
      }
-     xnlRequest.open(method, url, async)
-     xnlRequest.setRequestHeader("Content-Type", "application/json")
-     xnlRequest.send(JSON.stringify(body))
+     xmlRequest.open(method, url, async)
+     xmlRequest.setRequestHeader("Content-Type", "application/json")
+     xmlRequest.send(JSON.stringify(body))
  }
  
  const terminalsStatus = {
@@ -19,7 +19,7 @@
  }
 
  function pingAndShowData (addr) {
-     return request('POST', 'http://localhost:5000/ping', true, {ip: addr}, (response) => {
+     return request('POST', `${window.location.href}/ping`, true, {ip: addr}, (response) => {
          let status = document.getElementById(addr)
          if (response.online) {
              terminalsStatus.up += 1
@@ -68,8 +68,9 @@
      let span = buttonRescan.childNodes[1]
      span.classList.add('spinner-border', 'spinner-border-sm')
      console.log('Starting rescan...')
-     return request('POST', 'http://localhost:5000/rescan', true, {}, (response) => {
+     return request('POST', `${window.location.href}/rescan`, true, {}, (response) => {
          alert('Rescan terminado com sucesso')
          span.classList.remove('spinner-border', 'spinner-border-sm')
+         location.reload()
      })
  })

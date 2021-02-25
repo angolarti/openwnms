@@ -28,25 +28,26 @@ def authenticate():
 
     if authenticated:
         session['user_logged'] = username
-        flash(username + ' logado com sucesso!')
+        flash(username + ' logado com sucesso!', 'success')
         next_page = request.form['next']
-        print('Next: ' + next_page)
         return redirect(next_page)
     else:
-        flash('Não logado tente denovo!')
+        flash('Não logado tente de novo!', 'danger')
         return redirect(url_for('login'))
 
 
 @app.route('/logout')
 def logout():
     session['user_logged'] = None
-    flash('Nenhum utilizador logado')
     return redirect(url_for('login'))
 
 
 @app.route('/')
 def dashboard():
-    if session['user_logged'] is None:
+    try:
+        if session['user_logged'] is None:
+            return redirect(url_for('login'))
+    except KeyError:
         return redirect(url_for('login'))
 
     devices = Device()
@@ -55,7 +56,8 @@ def dashboard():
         'dashboard.html',
         devices=devices.find_all(),
         total_devices=devices.total_devices(),
-        count_device_scan_last_five_days = devices.count_last_device_scan_last_fine_days()
+        count_device_scan_last_five_days = devices.count_last_device_scan_last_fine_days(),
+        user_logged = session['user_logged'] 
     )
 
 

@@ -17,6 +17,7 @@ def network_scanner(net_target: str, address) -> list:
     print('Start scanner...')
     network_devices: list = []
     for ip in range(0, len(address)):
+        print(f'start here: {ip}',)
         packet = IP(dst=f'{net_target}.{address[ip]}', ttl=20) / ICMP()
         try:
             print(f'Found : {sr1(packet, timeout=TIMEOUT).src}')

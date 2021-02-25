@@ -32,14 +32,14 @@ def save_collection(target_mib: str, device_scan: SystemInfo, status: bool = Fal
         return device.to_collection()
 
 
-
 def scan():
+    print('Starting...')
     devices = []
-    all_address = list(range(256))
+    all_address = list(range(11))
     
-    # _address = [1, 22, 27, 30, 44, 92, 104, 112, 148, 191, 225]
+    _address = [1, 22, 27, 30, 44, 92, 104, 112, 148, 191, 225]
     
-    net_scan_devices = ScanDevice.net_discovery_host([225])
+    net_scan_devices = ScanDevice.net_discovery_host(all_address)
     ScanDevice.net_scan_ifaces()
 
     for reply in net_scan_devices:
@@ -56,6 +56,7 @@ def scan():
             device = SystemInfo(**network_devices[key])
             target_host_mib = MIB(device.ip_addr)
             find_device = Device().find_by_mac_addr(device.mac_addr)
+            print(f'Scanned: {target_host_mib}')
             if find_device is None:
                 devices.append(save_collection(target_host_mib, device))
             else:

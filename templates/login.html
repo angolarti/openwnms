@@ -16,7 +16,7 @@
                          class="d-inline-block align-top" alt="" loading="lazy">
             <form action="/authenticate" method="POST" class="form-signin">
                 <div class="card" style="width:;">
-                  {% with messages = get_flashed_messages() %}
+                  {% with messages = get_flashed_messages(category_filter=["danger"]) %}
                       {% if messages %}
                           <ul id="messages" class="list-unstyled">
                               {% for message in messages %}

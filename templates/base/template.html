@@ -43,11 +43,14 @@
                     <form class="form-inline" id="navbar-search-form">
                         <input type="text" class="form-control form-field delonix-form-field" placeholder="pesquisar" id="navbar-search-field">
                     </form>
-
+                    {% if user_logged %}
                     <div id="navbar-profile" class="ml-auto">
                         <img src="https://avatars2.githubusercontent.com/u/31959169?s=460&u=aee51d0ed3465add7eb53b09ad4bd7f3ec294669&v=4" alt="">
-                        <span>Walter Angolar</span>
+                        <span>
+                            <a class="text-info" href="/logout">Terminar sessão</i></a>
+                        </span>
                     </div>
+                    {% endif %}
                 </div>
             </nav>
 

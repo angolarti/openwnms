@@ -149,6 +149,7 @@ class MIB:
 
     @property
     def system_info(self):
+        print(self.__collect_software_running)
         try:
             system_info = {
                 'system_uptime': convert_int_to_time(int(self.collect(System.system_uptime).value)),
@@ -157,10 +158,50 @@ class MIB:
                     int(self.collect(System.amount_time_host_was_last_initialized)[0].value)),
                 'system_operation': self.collect(System.system_description).value,
                 'hostname': self.collect(System.get_hostname).value,
-                'software_installed': self.collect(System.get_software_installed).value
+                'software_running': self.__collect_software_running
             }
             return system_info
         except AttributeError:
+            pass
+    
+    @property
+    def __collect_software_running(self):
+
+        try:
+            SOFTWARE_STATUS = {
+                '1': 'running',
+                '2': 'runnable',
+                '3': '',
+                '4': 'invalid'
+            }
+            
+            SOFTWARE_TYPE = {
+                '1': '',
+                '2': 'application',
+                '3': '',
+                '4': 'operatingSystem'
+            }
+            software_runnig_collected = list(
+                zip(
+                    [software.value for software in self.collect(System.get_software_run_name)],
+                    [software.value for software in self.collect(System.get_software_run_path)],
+                    [SOFTWARE_TYPE[str(software.value)] for software in self.collect(System.get_software_run_type)],
+                    [SOFTWARE_STATUS[str(software.value)] for software in self.collect(System.get_software_run_status)],
+                    [software.value for software in self.collect(System.get_software_run_param)]
+                )
+            )
+            
+            software_running = []
+            for software in software_runnig_collected:
+                software_running.append({
+                    'name': software[0],
+                    'path': software[1],
+                    'type': software[2],
+                    'status': software[3],
+                    'param': software[4]
+                })
+            return software_running
+        except (AttributeError, TypeError):
             pass
 
 
